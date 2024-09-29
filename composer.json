@@ -1,0 +1,19 @@
+{
+    "name": "cr0/wp-funcpro",
+    "authors": [
+        {
+            "email": "boteistem@gmail.com",
+            "name": "Bruno Alves",
+            "role": "Web Developer"
+        }
+    ],
+    "description": "Plugin de Gerenciamento de Funções do WordPress",
+    "autoload": {
+        "psr-4": {
+            "WP\\FuncPro\\": "core/"
+        }
+    },
+    "require": {
+        "twig/twig": "^3.0"
+    }
+}

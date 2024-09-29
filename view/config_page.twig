@@ -1,0 +1,112 @@
+<div class="wrap">
+    <h1>Core - Customizações WP FuncPRO</h1>
+    <style>
+    
+input[type="checkbox"].wppd-ui-toggle {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+
+    -webkit-tap-highlight-color: transparent;
+
+    width: auto;
+    height: auto;
+    vertical-align: middle;
+    position: relative;
+    border: 0;
+    outline: 0;
+    cursor: pointer;
+    margin: 0 4px;
+    background: none;
+    box-shadow: none;
+}
+input[type="checkbox"].wppd-ui-toggle:focus {
+    box-shadow: none;
+}
+input[type="checkbox"].wppd-ui-toggle:after {
+    content: '';
+    font-size: 8px;
+    font-weight: 400;
+    line-height: 18px;
+    text-indent: -14px;
+    color: #ffffff;
+    width: 36px;
+    height: 18px;
+    display: inline-block;
+    background-color: #a7aaad;
+    border-radius: 72px;
+    box-shadow: 0 0 12px rgb(0 0 0 / 15%) inset;
+}
+input[type="checkbox"].wppd-ui-toggle:before {
+    content: '';
+    width: 14px;
+    height: 14px;
+    display: block;
+    position: absolute;
+    top: 2px;
+    left: 2px;
+    margin: 0;
+    border-radius: 50%;
+    background-color: #ffffff;
+}
+input[type="checkbox"].wppd-ui-toggle:checked:before {
+    left: 20px;
+    margin: 0;
+    background-color: #ffffff;
+}
+input[type="checkbox"].wppd-ui-toggle,
+input[type="checkbox"].wppd-ui-toggle:before,
+input[type="checkbox"].wppd-ui-toggle:after,
+input[type="checkbox"].wppd-ui-toggle:checked:before,
+input[type="checkbox"].wppd-ui-toggle:checked:after {
+    transition: ease .15s;
+}
+input[type="checkbox"].wppd-ui-toggle:checked:after {
+    content: 'ON';
+    background-color: #20A849;
+}
+
+    </style>
+    <form method="post" action="options.php">
+        <table class="form-table">
+            <!-- Inicio configurações customizadas  -->
+            {% for hook in hooks %}
+                <div>
+                   {% set tr = hookPermission(hook.id) == true %}
+                    {% if hookPermission(hook.id) %}
+                        <input type="checkbox" class="wppd-ui-toggle wpfuncpro-checkbox" id="{{hook.id}}" name="{{hook.id}}" checked>
+                    {% else %}
+                        <input type="checkbox" class="wppd-ui-toggle wpfuncpro-checkbox" id="{{hook.id}}" name="{{hook.id}}">
+                    {% endif %}
+                    <label for="field-id">{{hook.description}}</label>
+                </div>
+            {% endfor %}
+        </table>
+    </form>
+    <script>
+        function wpfuncpro_savedata(hookname, value){
+        jQuery.ajax({
+                type: "post",
+                dataType: "json",
+                url: "{{ajax_url}}",
+                data: {
+                    "hookname" : hookname,
+                    "status" : value,
+                    "action": "wp_funcpro"
+                },
+                success: function(msg){
+                    console.log(msg);
+                }
+            });        
+         }
+        jQuery(document).on('change', '.wpfuncpro-checkbox', function() {
+        var id = jQuery(this).attr('id');
+        if(this.checked) {
+            wpfuncpro_savedata(id, 1);
+        }else{
+            wpfuncpro_savedata(id, 0);
+        }
+    });
+    </script>
+
+</div>
